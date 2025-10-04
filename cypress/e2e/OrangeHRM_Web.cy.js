@@ -90,9 +90,10 @@ describe('Scenario Forgot password', () => {
 
 // TC1 berhasil membuka halaman reset password
     it('berhasil membuka halaman reset password', () => {
-      cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
-      cy.contains('Forgot your password?').click();
-      cy.url().should('include', 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/requestPasswordResetCode');
+            cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
+            // wait for the link to appear and be visible before clicking to avoid timing flakes
+            cy.contains('Forgot your password?', { timeout: 10000 }).should('be.visible').click();
+            cy.url({ timeout: 10000 }).should('include', 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/requestPasswordResetCode');
     })
 
 //TC2 berhasil reset password dengan username terdaftar
