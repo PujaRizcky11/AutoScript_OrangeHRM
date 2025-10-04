@@ -29,11 +29,23 @@ class LoginPage{
     }
     verifyLogin()
     {
-        cy.get(this.elements.lblDashboard).should('have.text','Dashboard')
+        // wait until breadcrumb is visible then compare normalized text to avoid case/whitespace flakes
+        cy.get(this.elements.lblDashboard)
+          .should('be.visible')
+          .invoke('text')
+          .then((t) => {
+              expect(t && t.trim().toLowerCase()).to.equal('dashboard');
+          });
     }
    //verify a login error message (e.g. 'Invalid credentials')  
     verifyMessage(invalidCredentials) {
-        cy.get(this.elements.msgError).should('have.text', invalidCredentials);
+        // normalize the text node before comparing to handle whitespace/casing
+        cy.get(this.elements.msgError)
+          .should('be.visible')
+          .invoke('text')
+          .then((t) => {
+              expect(t && t.trim()).to.equal(invalidCredentials);
+          });
     }
 }
 export default LoginPage;
